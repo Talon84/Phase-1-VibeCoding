@@ -64,7 +64,7 @@ O projeto será organizado usando o GitHub para armazenar o código.
 
 Estrutura básica:
 
-## eztask/
+### eztask/
 ### ├── docs/
 ### ├── backend/
 ### ├── frontend/
