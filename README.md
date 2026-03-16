@@ -64,11 +64,11 @@ O projeto será organizado usando o GitHub para armazenar o código.
 
 Estrutura básica:
 
-# eztask/
-# ├── docs/
-# ├── backend/
-# ├── frontend/
-# └── README.md
+## eztask/
+### ├── docs/
+### ├── backend/
+### ├── frontend/
+### └── README.md
 
 **docs**: documentação do projeto
 
