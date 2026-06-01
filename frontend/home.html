@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EZTask - Home</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", cursive;
+      background-image: url('back94.gif');
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* BLOCO CENTRAL (tipo blog) */
+    .gradient {
+        background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00ff);
+        background-size: 600% 600%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+    animation: brilho 5s ease infinite;
+    }
+
+    @keyframes brilho {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+    }
+
+
+    .window {
+      width: 900px;
+      background: white;
+      border: 4px solid black;
+      box-shadow: 0 0 20px black;
+      overflow: hidden;
+      border-color: #ffffff #404040 #404040 #ffffff;
+      box-shadow: 0 0 15px #ff00ff;
+    }
+
+    /* MARQUEE NO TOPO */
+    marquee {
+      background: rgb(0, 0, 0);
+      color: cyan;
+      font-weight: bold;
+      padding: 5px;
+    }
+
+    /* CONTEÚDO DIVIDIDO */
+    .split {
+      display: flex;
+    }
+
+    /* IMAGEM */
+    .left {
+    width: 50%;
+    background-image: url('boombox3.gif');
+    background-size: 60%; /* 👈 menor */
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 300px;
+    }
+
+    
+
+    /* TEXTO */
+    .right {
+      width: 50%;
+      padding: 20px;
+      color: black;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    button {
+        margin-top: 15px;
+        background-color: #c0c0c0;
+        color: black;
+        font-family: "MS Sans Serif", Arial;
+        font-size: 14px;
+
+        padding: 6px 16px;
+        cursor: pointer;
+        font-weight: normal;
+
+        border-top: 2px solid #ffffff;
+        border-left: 2px solid #ffffff;
+        border-right: 2px solid #404040;
+        border-bottom: 2px solid #404040;
+
+        box-shadow: inset -1px -1px #808080, inset 1px 1px #dfdfdf;
+    }
+
+    /* HOVER (leve, estilo original) */
+    button:hover {
+        background-color: #d4d0c8;
+    }
+
+    /* CLIQUE (efeito pressionado real) */
+    button:active {
+        border-top: 2px solid #404040;
+        border-left: 2px solid #404040;
+        border-right: 2px solid #ffffff;
+        border-bottom: 2px solid #ffffff;
+
+        box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+
+        transform: translate(1px, 1px);
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="window">
+
+  <marquee>🔥 Bem-vindo ao EZTask 🔥</marquee>
+
+  <div class="split">
+
+    <!-- IMAGEM -->
+    <div class="left"></div>
+
+    <!-- TEXTO -->
+    <div class="right">
+      <h1>Crie suas tarefas <span class="gradient">em minutos!</span></h1>
+
+      <p>
+        O EZTask é um projeto pensado pra deixar a organização de tarefas mais simples e direta. 
+        A ideia é ajudar você a separar suas atividades por categorias e definir prazos de um jeito fácil.
+      </p>
+
+      <p>
+        Além disso, ele traz um visual retrô inspirado na internet dos anos 90, unindo utilidade com estilo e deixando tudo mais divertido.
+      </p>
+
+      <button onclick="entrar()">GET STARTED</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function entrar() {
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+
+  if (userId && token) {
+    window.location.href = "index.html";
+  } else {
+    window.location.href = "login.html";
+  }
+}
+
+const imagens = [
+  "boombox3.gif",
+  "3NY53YEPBGVMQJP63H3QSDGXYWABUYWL.gif",
+  "rot_animation.gif"
+];
+
+// pega uma imagem aleatória
+const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+let index = 0;
+
+setInterval(() => {
+  document.querySelector(".left").style.backgroundImage = `url('${imagens[index]}')`;
+  index = (index + 1) % imagens.length;
+}, 3000); // troca a cada 3 segundos
+
+// aplica no CSS
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".left").style.backgroundImage = `url('${imagemAleatoria}')`;
+});
+
+</script>
+
+</body>
+</html>

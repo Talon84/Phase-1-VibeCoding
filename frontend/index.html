@@ -1,0 +1,1261 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EZTask</title>
+
+<style>
+
+body {
+  margin: 0;
+  font-family: "MS Sans Serif", Arial;
+  background-image: url('back94.gif');
+  display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+
+  position: fixed;
+
+  left: 0;
+
+  top: 0;
+
+  bottom: 0;
+
+  width: 220px;
+
+  padding: 10px;
+
+  overflow-y: auto;
+
+  background: #c0c0c0d9;
+
+  border: 2px solid;
+
+  border-color:
+    #ff7eff
+    #00ffff
+    #00ffff
+    #ff00ff;
+
+  backdrop-filter: blur(3px);
+
+  box-shadow:
+    0 0 50px #ff7eff93,
+    inset -2px -2px #ffffff,
+    inset 2px 2px #404040;
+
+  z-index: 999;
+}
+
+/* LOGO */
+
+.logo {
+  width: 200px;
+
+  display: block;
+
+  margin: 20px auto;
+
+  image-rendering: pixelated;
+
+  animation:
+    glow 2s infinite alternate,
+    float 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+  from {
+    filter: drop-shadow(0 0 5px #00ffff);
+  }
+
+  to {
+    filter: drop-shadow(0 0 20px #00ffff);
+  }
+}
+
+@keyframes float {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* CATEGORIAS */
+
+.categoria {
+
+  padding: 5px;
+
+  margin: 5px 0;
+
+  cursor: pointer;
+
+  background: #c0c0c0;
+
+  border: 2px solid;
+
+  border-color:
+    #ffffff
+    #404040
+    #404040
+    #ffffff;
+}
+
+.categoria:hover {
+  background: #000080;
+  color: white;
+}
+
+.categoria:active {
+  border-color:
+    #404040
+    #ffffff
+    #ffffff
+    #404040;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  margin-left: 260px;
+}
+
+/* TÍTULOS */
+
+h3 {
+  color: white;
+  text-shadow: 2px 2px #000000;
+}
+
+/* INPUTS */
+
+input,
+select {
+
+  background: white;
+
+  border: 2px inset #808080;
+
+  padding: 4px;
+
+  margin: 5px;
+}
+
+/* BOTÕES */
+
+button {
+
+  background: #c0c0c0;
+
+  border: 2px solid;
+
+  border-color:
+    #ffffff
+    #404040
+    #404040
+    #ffffff;
+
+  padding: 4px 10px;
+
+  cursor: pointer;
+}
+
+button:hover {
+  background: #d4d0c8;
+}
+
+button:active {
+
+  border-color:
+    #404040
+    #ffffff
+    #ffffff
+    #404040;
+}
+
+/* STATUS */
+
+.concluida {
+  color: #3ea33e;
+  font-weight: bold;
+}
+
+.pendente {
+  color: #b8860b;
+  font-weight: bold;
+}
+
+.atrasada {
+  color: #ff3b3b;
+  font-weight: bold;
+}
+
+/* MENU */
+
+.menu-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.task-card {
+
+  animation:
+    neonPulse 3s infinite alternate;
+}
+
+@keyframes neonPulse {
+
+  from {
+
+    box-shadow:
+      inset -2px -2px #808080,
+      inset 2px 2px #dfdfdf,
+      0 0 5px #00ffff55;
+  }
+
+  to {
+
+    box-shadow:
+      inset -2px -2px #808080,
+      inset 2px 2px #dfdfdf,
+      0 0 15px #00ffffaa;
+  }
+}
+
+.dropdown {
+
+  position: absolute;
+
+  top: 40px;
+  left: 0;
+
+  width: 180px;
+
+  background: #c0c0c0;
+
+  border: 2px solid;
+
+  border-color:
+    #ffffff
+    #404040
+    #404040
+    #ffffff;
+
+  box-shadow:
+    inset -1px -1px #808080,
+    inset 1px 1px #dfdfdf,
+    3px 3px 8px rgba(0,0,0,0.4);
+
+  z-index: 999;
+}
+
+.dropdown-item {
+
+  padding: 8px;
+
+  cursor: pointer;
+
+  border-bottom: 1px solid #808080;
+}
+
+.dropdown-item:hover {
+  background: #000080;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+#contador {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* FX */
+
+.flash-success {
+  animation: flashSuccess 0.5s ease;
+}
+
+@keyframes flashSuccess {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px #00ff99;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========================= */
+/* CARDS */
+/* ========================= */
+
+.task-container {
+  width: 95%;
+  margin: auto;
+}
+
+.section-title {
+
+  margin-top: 25px;
+  margin-bottom: 15px;
+
+  padding: 10px;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  color: white;
+
+  border: 2px solid;
+}
+
+.section-pendente {
+
+  background: #5a0000;
+
+  border-color:
+    #ff8080
+    #300000
+    #300000
+    #ff8080;
+}
+
+.section-concluida {
+
+  background: #004d1a;
+
+  border-color:
+    #00ff99
+    #002b10
+    #002b10
+    #00ff99;
+}
+
+.cards-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(320px, 1fr));
+
+  gap: 15px;
+}
+
+/* CARD */
+
+.task-card {
+
+  background: #c0c0c0;
+
+  border: 3px solid;
+
+  border-color:
+    #ffffff
+    #404040
+    #404040
+    #ffffff;
+
+  padding: 12px;
+
+  text-align: left;
+
+  box-shadow:
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf,
+    4px 4px 10px rgba(0,0,0,0.4);
+
+  transition: 0.2s;
+}
+
+.task-card:hover {
+
+  transform:
+    translateY(-5px)
+    scale(1.01);
+
+  box-shadow:
+    0 0 20px #00ffff,
+    0 0 40px #ff00ff88;
+
+  transition: 0.2s;
+}
+
+/* HEADER */
+
+.card-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.card-title {
+
+  padding: 4px 8px;
+
+  font-weight: bold;
+
+  border: 2px inset #808080;
+}
+
+/* TEXTO */
+
+.card-desc {
+  margin: 10px 0;
+  min-height: 40px;
+}
+
+/* INFO */
+
+.card-info {
+  margin: 6px 0;
+}
+
+/* AÇÕES */
+
+.card-actions {
+
+  margin-top: 12px;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.done-btn {
+  flex: 1;
+}
+
+.delete-btn {
+  flex: 1;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+  <h3>Categorias</h3>
+
+  <button onclick="irHome()">
+    🏠 Home
+  </button>
+
+  <hr>
+
+  <div class="categoria" onclick="loadTasks()">
+    📂 Todas
+  </div>
+
+  <div id="listaCategorias"></div>
+
+  <hr>
+
+  <input id="novaCategoria" placeholder="Categoria">
+
+  <input type="color" id="corCategoria">
+
+  <button onclick="criarCategoria()">
+    +
+  </button>
+
+  <hr>
+
+  <div class="menu-container">
+
+    <button onclick="toggleMenu()">
+      ☰ Menu
+    </button>
+
+    <div id="menuDropdown" class="dropdown hidden">
+
+      <div class="dropdown-item">
+        Conta
+      </div>
+
+      <div class="dropdown-item">
+        Configurações
+      </div>
+
+      <div class="dropdown-item" onclick="logout()">
+        Sair da Conta
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+  <img
+    src="EZTask.png"
+    alt="EZTask"
+    class="logo"
+  >
+
+  <h3>Criar tarefa</h3>
+
+  <input
+    id="titulo"
+    placeholder="Título"
+  >
+
+  <input
+    id="descricao"
+    placeholder="Descrição"
+  >
+
+  <input
+    id="prazo"
+    type="date"
+  >
+
+  <br><br>
+
+  <input
+    id="pesquisa"
+    placeholder="🔍 Buscar tarefa..."
+    onkeyup="buscarTask()"
+  >
+
+  <select id="prioridade">
+
+    <option value="Baixa">
+      🟢 Baixa
+    </option>
+
+    <option value="Média">
+      🟡 Média
+    </option>
+
+    <option value="Alta">
+      🔴 Alta
+    </option>
+
+  </select>
+
+  <select id="categoriaSelect">
+    <option value="">
+      Sem categoria
+    </option>
+  </select>
+
+  <br><br>
+
+  <button onclick="addTask()">
+    Adicionar
+  </button>
+
+  <br><br>
+
+  <h3 id="contador"></h3>
+
+  <div
+    id="taskContainer"
+    class="task-container"
+  ></div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<script>
+
+// ================= AUTH =================
+
+function checkAuth() {
+
+  const userId =
+    localStorage.getItem("userId");
+
+  const token =
+    localStorage.getItem("token");
+
+  if (!userId || !token) {
+
+    window.location.href =
+      "login.html";
+
+    return false;
+  }
+
+  return true;
+}
+
+const userId =
+  localStorage.getItem("userId");
+
+// ================= UTIL =================
+
+function isDark(color) {
+
+  const hex =
+    color.replace("#", "");
+
+  const r =
+    parseInt(hex.substr(0, 2), 16);
+
+  const g =
+    parseInt(hex.substr(2, 2), 16);
+
+  const b =
+    parseInt(hex.substr(4, 2), 16);
+
+  const brightness =
+    (r * 299 + g * 587 + b * 114) / 1000;
+
+  return brightness < 128;
+}
+
+function formatarData(data) {
+
+  if (!data) return "-";
+
+  const partes =
+    data.split("-");
+
+  return `
+    ${partes[2]}/
+    ${partes[1]}/
+    ${partes[0]}
+  `;
+}
+
+function taskAtrasada(task) {
+
+  if (task.concluida) {
+    return false;
+  }
+
+  if (!task.prazo) {
+    return false;
+  }
+
+  const hoje = new Date();
+
+  hoje.setHours(0, 0, 0, 0);
+
+  const prazo =
+    new Date(task.prazo);
+
+  return prazo < hoje;
+}
+
+// ================= MENU =================
+
+function toggleMenu() {
+
+  const menu =
+    document.getElementById(
+      "menuDropdown"
+    );
+
+  menu.classList.toggle("hidden");
+}
+
+// ================= FX =================
+
+let effectCooldown = false;
+
+function playAddSound() {
+
+  const audio =
+    new Audio("add.mp3");
+
+  audio.volume = 0.4;
+
+  audio.play();
+}
+
+function playDeleteSound() {
+
+  const audio =
+    new Audio("delete.mp3");
+
+  audio.volume = 0.4;
+
+  audio.play();
+}
+
+function playCompleteEffect() {
+
+  if (effectCooldown) return;
+
+  effectCooldown = true;
+
+  const audio =
+    new Audio(
+      "YTDown_YouTube_Microsoft-Windows-95-Shutdown-Sound_Media_z1JImdh0Z78_006_128k.mp3"
+    );
+
+  audio.volume = 0.4;
+
+  audio.play();
+
+  confetti({
+
+    particleCount: 120,
+
+    spread: 80,
+
+    origin: {
+      y: 0.6
+    }
+
+  });
+
+  setTimeout(() => {
+    effectCooldown = false;
+  }, 2500);
+}
+
+// ================= CATEGORIAS =================
+
+let categoriasMap = {};
+
+function irHome() {
+  window.location.href = "home.html";
+}
+
+async function loadCategorias() {
+
+  const res =
+    await fetch(
+      `http://localhost:3000/categorias/${userId}`
+    );
+
+  const data =
+    await res.json();
+
+  const lista =
+    document.getElementById(
+      "listaCategorias"
+    );
+
+  const select =
+    document.getElementById(
+      "categoriaSelect"
+    );
+
+  lista.innerHTML = "";
+
+  select.innerHTML =
+    '<option value="">Sem categoria</option>';
+
+  categoriasMap = {};
+
+  data.forEach(cat => {
+
+    categoriasMap[cat.id] = cat.cor;
+
+    const div =
+      document.createElement("div");
+
+    div.className = "categoria";
+
+    div.textContent = cat.nome;
+
+    div.style.backgroundColor = cat.cor;
+
+    div.style.color =
+      isDark(cat.cor)
+      ? "white"
+      : "black";
+
+    div.onclick =
+      () => filtrar(cat.id);
+
+    lista.appendChild(div);
+
+    const option =
+      document.createElement("option");
+
+    option.value = cat.id;
+
+    option.textContent = cat.nome;
+
+    select.appendChild(option);
+  });
+}
+
+async function criarCategoria() {
+
+  const nome =
+    document.getElementById(
+      "novaCategoria"
+    ).value;
+
+  const cor =
+    document.getElementById(
+      "corCategoria"
+    ).value;
+
+  if (!nome) {
+    return alert("Digite um nome!");
+  }
+
+  await fetch(
+    "http://localhost:3000/categorias",
+    {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+
+      body: JSON.stringify({
+
+        nome,
+        cor,
+        userId
+
+      })
+    }
+  );
+
+  document.getElementById(
+    "novaCategoria"
+  ).value = "";
+
+  await loadCategorias();
+}
+
+// ================= TASKS =================
+
+async function loadTasks() {
+
+  const res =
+    await fetch(
+      `http://localhost:3000/tasks/${userId}`
+    );
+
+  const data =
+    await res.json();
+
+  render(data);
+}
+
+async function buscarTask() {
+
+  const termo =
+    document.getElementById(
+      "pesquisa"
+    )
+    .value
+    .toLowerCase();
+
+  const res =
+    await fetch(
+      `http://localhost:3000/tasks/${userId}`
+    );
+
+  const data =
+    await res.json();
+
+  const filtered =
+    data.filter(task => {
+
+      const titulo =
+        task.titulo
+        ? task.titulo.toLowerCase()
+        : "";
+
+      const descricao =
+        task.descricao
+        ? task.descricao.toLowerCase()
+        : "";
+
+      return (
+        titulo.includes(termo) ||
+        descricao.includes(termo)
+      );
+    });
+
+  render(filtered);
+}
+
+async function filtrar(categoriaId) {
+
+  const res =
+    await fetch(
+      `http://localhost:3000/tasks/${userId}/${categoriaId}`
+    );
+
+  const data =
+    await res.json();
+
+  render(data);
+}
+
+// ================= RENDER =================
+
+function render(tasks) {
+
+  const container =
+    document.getElementById(
+      "taskContainer"
+    );
+
+  container.innerHTML = "";
+
+  const concluidas =
+    tasks.filter(t => t.concluida);
+
+  const pendentes =
+    tasks.filter(t => !t.concluida);
+
+  document.getElementById(
+    "contador"
+  ).innerHTML = `
+
+    ${tasks.length} tarefas |
+    ✔ ${concluidas.length} concluídas |
+    ⌛ ${pendentes.length} pendentes
+
+  `;
+
+  // =========================
+  // PENDENTES
+  // =========================
+
+  if (pendentes.length > 0) {
+
+    container.innerHTML += `
+      <div class="
+        section-title
+        section-pendente
+      ">
+        ⌛ Pendentes / Atrasadas
+      </div>
+
+      <div
+        id="pendentesGrid"
+        class="cards-grid"
+      ></div>
+    `;
+
+    const grid =
+      document.getElementById(
+        "pendentesGrid"
+      );
+
+    pendentes.forEach(t => {
+      criarCardTask(t, grid);
+    });
+  }
+
+  // =========================
+  // CONCLUÍDAS
+  // =========================
+
+  if (concluidas.length > 0) {
+
+    container.innerHTML += `
+      <div class="
+        section-title
+        section-concluida
+      ">
+        ✔ Concluídas
+      </div>
+
+      <div
+        id="concluidasGrid"
+        class="cards-grid"
+      ></div>
+    `;
+
+    const grid =
+      document.getElementById(
+        "concluidasGrid"
+      );
+
+    concluidas.forEach(t => {
+      criarCardTask(t, grid);
+    });
+  }
+}
+
+// ================= CARD =================
+
+function criarCardTask(t, grid) {
+
+  const cor =
+    categoriasMap[t.categoria_id]
+    || "#ffffff";
+
+  const textColor =
+    isDark(cor)
+    ? "white"
+    : "black";
+
+  let prioridade =
+    "🟢 Baixa";
+
+  if (t.prioridade === "Média") {
+    prioridade = "🟡 Média";
+  }
+
+  if (t.prioridade === "Alta") {
+    prioridade = "🔴 Alta";
+  }
+
+  const statusTexto =
+    t.concluida
+    ? "✔ Concluída"
+    : taskAtrasada(t)
+    ? "⚠ Atrasada"
+    : "⌛ Pendente";
+
+  const statusClasse =
+    t.concluida
+    ? "concluida"
+    : taskAtrasada(t)
+    ? "atrasada"
+    : "pendente";
+
+  const card =
+    document.createElement("div");
+
+  card.className = "task-card";
+
+  card.innerHTML = `
+
+    <div class="card-header">
+
+      <div
+        class="card-title"
+        style="
+          background:${cor};
+          color:${textColor};
+        "
+      >
+        ${t.titulo}
+      </div>
+
+      <div class="priority">
+        ${prioridade}
+      </div>
+
+    </div>
+
+    <div class="card-desc">
+      ${t.descricao || "-"}
+    </div>
+
+    <div class="card-info">
+      📅 Prazo:
+      ${formatarData(t.prazo)}
+    </div>
+
+    <div class="
+      card-info
+      ${statusClasse}
+    ">
+      ${statusTexto}
+    </div>
+
+    <div class="card-info">
+      ✔ Concluída em:
+      ${
+        t.concluida_em
+        ? formatarData(t.concluida_em)
+        : "-"
+      }
+    </div>
+
+    <div class="card-actions">
+
+      <button
+        class="done-btn"
+        onclick="done(${t.id})"
+      >
+        OK
+      </button>
+
+      <button
+        class="delete-btn"
+        onclick="del(${t.id})"
+      >
+        X
+      </button>
+
+    </div>
+
+  `;
+
+  grid.appendChild(card);
+}
+
+// ================= ACTIONS =================
+
+async function addTask() {
+
+  const titulo =
+    document.getElementById(
+      "titulo"
+    ).value;
+
+  const descricao =
+    document.getElementById(
+      "descricao"
+    ).value;
+
+  const prazo =
+    document.getElementById(
+      "prazo"
+    ).value;
+
+  const prioridade =
+    document.getElementById(
+      "prioridade"
+    ).value;
+
+  const categoriaId =
+    document.getElementById(
+      "categoriaSelect"
+    ).value || null;
+
+  if (!titulo) {
+    return alert("Digite um título!");
+  }
+
+  await fetch(
+    "http://localhost:3000/tasks",
+    {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+
+      body: JSON.stringify({
+
+        titulo,
+        descricao,
+        prazo,
+        prioridade,
+        userId,
+        categoriaId
+
+      })
+    }
+  );
+
+  document.getElementById(
+    "titulo"
+  ).value = "";
+
+  document.getElementById(
+    "descricao"
+  ).value = "";
+
+  document.getElementById(
+    "prazo"
+  ).value = "";
+
+  playAddSound();
+
+  loadTasks();
+}
+
+async function done(id) {
+
+  await fetch(
+    `http://localhost:3000/tasks/${id}`,
+    {
+      method: "PUT"
+    }
+  );
+
+  playCompleteEffect();
+
+  loadTasks();
+}
+
+async function del(id) {
+
+  await fetch(
+    `http://localhost:3000/tasks/${id}/${userId}`,
+    {
+      method: "DELETE"
+    }
+  );
+
+  playDeleteSound();
+
+  loadTasks();
+}
+
+// ================= LOGOUT =================
+
+function logout() {
+
+  localStorage.removeItem("userId");
+
+  localStorage.removeItem("token");
+
+  window.location.href =
+    "login.html";
+}
+
+// ================= INIT =================
+
+async function init() {
+
+  if (!checkAuth()) return;
+
+  await loadCategorias();
+
+  await loadTasks();
+}
+
+init();
+
+</script>
+
+</body>
+</html>
+```

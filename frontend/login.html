@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - EZTask</title>
+
+  <style>
+
+    body {
+      background-color: #008080;
+      font-family: "MS Sans Serif", Arial;
+      text-align: center;
+    }
+
+    .login-box {
+      background-color: #c0c0c0;
+      border: 2px solid;
+      border-color: white gray gray white;
+
+      width: 300px;
+
+      margin: 100px auto;
+
+      padding: 20px;
+
+      box-shadow:
+        inset -2px -2px #404040,
+        inset 2px 2px #ffffff,
+        0 0 20px rgba(0,0,0,0.4);
+    }
+
+    input {
+      display: block;
+
+      margin: 10px auto;
+
+      padding: 5px;
+
+      border: 2px inset gray;
+
+      width: 80%;
+    }
+
+    button {
+      background-color: #c0c0c0;
+
+      border: 2px solid;
+
+      border-color: white gray gray white;
+
+      padding: 6px 12px;
+
+      cursor: pointer;
+
+      margin: 5px;
+    }
+
+    button:hover {
+      background-color: #d4d0c8;
+    }
+
+    button:active {
+      border-color: gray white white gray;
+
+      transform: translate(1px, 1px);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <h3>Login</h3>
+
+    <input
+      id="email"
+      placeholder="Email"
+    >
+
+    <input
+      id="senha"
+      type="password"
+      placeholder="Senha"
+    >
+
+    <button onclick="login()">
+      Entrar
+    </button>
+
+    <button onclick="register()">
+      Cadastrar
+    </button>
+
+    <br>
+
+    <button onclick="voltarHome()">
+      Home
+    </button>
+
+  </div>
+
+  <script>
+
+    // ================= AUTO LOGIN =================
+
+    const userId =
+      localStorage.getItem("userId");
+
+    const token =
+      localStorage.getItem("token");
+
+    if (userId && token) {
+      window.location.href = "home.html";
+    }
+
+    // ================= LOGIN =================
+
+    async function login() {
+
+      const email =
+        document.getElementById("email").value;
+
+      const senha =
+        document.getElementById("senha").value;
+
+      if (!email || !senha) {
+
+        alert("Preencha todos os campos!");
+
+        return;
+      }
+
+      try {
+
+        const res = await fetch(
+          "http://localhost:3000/login",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              email,
+              senha
+            })
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.userId) {
+
+          localStorage.setItem(
+            "userId",
+            data.userId
+          );
+
+          localStorage.setItem(
+            "token",
+            "logado"
+          );
+
+          window.location.href = "index.html";
+
+        } else {
+
+          alert(
+            data.erro || "Login inválido"
+          );
+        }
+
+      } catch (err) {
+
+        alert("Erro ao conectar com o servidor");
+
+        console.error(err);
+      }
+    }
+
+    // ================= REGISTER =================
+
+    async function register() {
+
+      const email =
+        document.getElementById("email").value;
+
+      const senha =
+        document.getElementById("senha").value;
+
+      if (!email || !senha) {
+
+        alert("Preencha todos os campos!");
+
+        return;
+      }
+
+      try {
+
+        const res = await fetch(
+          "http://localhost:3000/register",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              email,
+              senha
+            })
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.ok) {
+
+          alert("Usuário criado com sucesso!");
+
+        } else {
+
+          alert(
+            data.erro || "Erro ao cadastrar"
+          );
+        }
+
+      } catch (err) {
+
+        alert("Erro ao conectar com o servidor");
+
+        console.error(err);
+      }
+    }
+
+    // ================= VOLTAR HOME =================
+
+    function voltarHome() {
+
+      window.location.href = "home.html";
+    }
+
+  </script>
+
+</body>
+</html>
+
