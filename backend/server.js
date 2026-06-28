@@ -13,9 +13,6 @@ const db = new sqlite3.Database("./database.db");
 // =======================
 // TABELAS
 // =======================
-db.run(`ALTER TABLE tasks
-ADD COLUMN concluida_em TEXT;
-`);
 
 
 db.run(`
@@ -36,16 +33,17 @@ db.run(`
 `);
 
 db.run(`
-  CREATE TABLE IF NOT EXISTS tasks (
+CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titulo TEXT,
     descricao TEXT,
     prazo TEXT,
     prioridade TEXT,
     concluida INTEGER,
+    concluida_em TEXT,
     user_id INTEGER,
     categoria_id INTEGER
-  )
+)
 `);
 
 // =======================
